@@ -1,5 +1,6 @@
 ﻿using Game.Scripts.BattleSystem.BattleMembers;
 using Game.Scripts.ClientLogic.UI.BaseClasses;
+using Game.Scripts.ServerLogic.Abilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

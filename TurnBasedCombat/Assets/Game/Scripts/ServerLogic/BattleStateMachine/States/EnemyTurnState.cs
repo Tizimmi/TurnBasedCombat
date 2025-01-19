@@ -1,57 +1,34 @@
 ﻿using Game.Scripts.BattleSystem.BattleMembers;
 using Game.Scripts.Global;
-using System.Collections;
 using UnityEngine;
 
-namespace Game.Scripts.BattleSystem.BattleStateMachine.States
+namespace Game.Scripts.ServerLogic.BattleStateMachine.States
 {
 	public class EnemyTurnState : IState
 	{
-		private readonly BattleStateMachine _battleStateMachine;
+		private readonly BattleControllerStateMachine _battleControllerStateMachine;
 		private readonly ICoroutineRunner _coroutineRunner;
-		private readonly Unit _unit;
-		private readonly Unit _target;
+		private readonly Unit _enemy;
+		private readonly EventDispatcher _eventDispatcher;
 
-		public EnemyTurnState(
-			BattleStateMachine battleStateMachine,
-			ICoroutineRunner coroutineRunner,
-			Unit unit,
-			Unit target)
+		public EnemyTurnState(Unit enemy, EventDispatcher eventDispatcher)
 		{
-			_battleStateMachine = battleStateMachine;
-			_coroutineRunner = coroutineRunner;
-			_unit = unit;
-			_target = target;
+			_enemy = enemy;
+			_eventDispatcher = eventDispatcher;
 		}
 
 		public void Enter()
 		{
-			if (_unit.CurrentHealth.Value <= 0 || _target.CurrentHealth.Value <= 0)
+			if (_enemy.CurrentHealth.Value <= 0)
 			{
-				_battleStateMachine.Enter<BattleEndState>();
+				_eventDispatcher.DispatchEvent(EventType.GameOver, "Player");
 			}
-			else
-			{
-				_unit.UseRandomAbility(_target);
-				SwitchTurn();
-			}
-		}
-		
-		private void SwitchTurn()
-		{
-			_coroutineRunner.StartCoroutine(Timer(1));
-		}
-		
-		private IEnumerator Timer(int seconds)
-		{
-			yield return new WaitForSeconds(seconds);
-			
-			_battleStateMachine.Enter<PlayerTurnState>();
+			_enemy.UseRandomAbility();
 		}
 
 		public void Exit()
 		{
-			Debug.Log("Enemy ended it's turn");
+			Debug.Log($"Enemy ended it's turn with {_enemy.CurrentHealth.Value}");
 		}
 	}
 }

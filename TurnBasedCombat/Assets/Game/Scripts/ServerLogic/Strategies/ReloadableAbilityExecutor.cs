@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Game.Scripts.ServerLogic.Abilities;
+using System.Collections.Generic;
 
 namespace Game.Scripts.ServerLogic.Strategies
 {
@@ -23,7 +24,7 @@ namespace Game.Scripts.ServerLogic.Strategies
 				_itemsOnCooldown.Add(reloadable, reloadable.ReloadTime);
 			}
 			
-			ability.Execute();
+			_coreExecutor.TryExecute(ability);
 			return true;
 		}
 	}

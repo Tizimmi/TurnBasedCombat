@@ -1,58 +1,39 @@
-﻿using Game.Scripts.BattleSystem.Abilities;
-using Game.Scripts.BattleSystem.BattleMembers;
+﻿using Game.Scripts.BattleSystem.BattleMembers;
 using Game.Scripts.Global;
+using Game.Scripts.ServerLogic.Abilities;
 using System.Collections;
 using UnityEngine;
 
-namespace Game.Scripts.BattleSystem.BattleStateMachine.States
+namespace Game.Scripts.ServerLogic.BattleStateMachine.States
 {
-	public class PlayerTurnState : IState
+	public class PlayerTurnState : IPayloadedState<AbilityType>
 	{
-		private readonly BattleStateMachine _battleStateMachine;
+		private readonly EventDispatcher _eventDispatcher;
 		private readonly ICoroutineRunner _coroutineRunner;
-		private readonly Player _player;
+		private readonly Unit _player;
 		private readonly Unit _target;
 
-		public PlayerTurnState(
-			BattleStateMachine battleStateMachine,
-			ICoroutineRunner coroutineRunner,
-			Player player,
-			Unit target)
+		public PlayerTurnState(EventDispatcher eventDispatcher,
+			Unit player)
 		{
-			_battleStateMachine = battleStateMachine;
-			_coroutineRunner = coroutineRunner;
+			_eventDispatcher = eventDispatcher;
 			_player = player;
-			_target = target;
 		}
 
-		public void Enter()
+		public void Enter(AbilityType payload)
 		{
-			if (_player.CurrentHealth.Value <= 0 || _target.CurrentHealth.Value <= 0)
+			if (_player.CurrentHealth.Value <= 0)
 			{
-				_battleStateMachine.Enter<BattleEndState>();
+				_eventDispatcher.DispatchEvent(EventType.GameOver, "Enemy");
+				return;
 			}
-			else
-			{
-				_player.UseRandomAbility(_target);
-				SwitchTurn();
-			}
-		}
-
-		private void SwitchTurn()
-		{
-			_coroutineRunner.StartCoroutine(Timer(1));
-		}
-
-		private IEnumerator Timer(int seconds)
-		{
-			yield return new WaitForSeconds(seconds);
 			
-			_battleStateMachine.Enter<EnemyTurnState>();
+			_player.UseAbility(payload);
 		}
 
 		public void Exit()
 		{
-			Debug.Log("Player ended his turn");
+			Debug.Log($"Player ended his turn with {_player.CurrentHealth.Value}");
 		}
 	}
 }

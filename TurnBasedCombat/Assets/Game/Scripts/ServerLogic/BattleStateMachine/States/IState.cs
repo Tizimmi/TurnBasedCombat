@@ -1,8 +1,12 @@
-﻿namespace Game.Scripts.BattleSystem.BattleStateMachine.States
+﻿namespace Game.Scripts.ServerLogic.BattleStateMachine.States
 {
-	public interface IState
+	public interface IState : IExitableState
 	{
 		void Enter();
-		void Exit();
+	}
+
+	public interface IPayloadedState<TPayload> : IExitableState
+	{
+		void Enter(TPayload payload);
 	}
 }
