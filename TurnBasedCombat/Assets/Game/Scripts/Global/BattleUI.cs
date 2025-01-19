@@ -6,12 +6,10 @@ namespace Game.Scripts.Global
 	public class BattleUI
 	{
 		private readonly RequestHandler _requestHandler;
-		private readonly ICoroutineRunner _coroutineRunner; 
 
-		public BattleUI(RequestHandler requestHandler, ICoroutineRunner coroutineRunner)
+		public BattleUI(RequestHandler requestHandler)
 		{
 			_requestHandler = requestHandler;
-			_coroutineRunner = coroutineRunner;
 		}
 
 		public void PlayerTryAttack()

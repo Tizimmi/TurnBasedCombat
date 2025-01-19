@@ -8,10 +8,6 @@
 		{
 			_battleControllerStateMachine = new BattleStateMachine.BattleControllerStateMachine(eventDispatcher);
 		}
-
-		public void StartTurn()
-		{
-			
-		}
+		
 	}
 }

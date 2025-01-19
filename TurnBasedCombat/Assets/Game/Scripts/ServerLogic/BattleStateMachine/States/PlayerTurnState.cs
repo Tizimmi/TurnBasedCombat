@@ -1,7 +1,6 @@
 ﻿using Game.Scripts.BattleSystem.BattleMembers;
 using Game.Scripts.Global;
 using Game.Scripts.ServerLogic.Abilities;
-using System.Collections;
 using UnityEngine;
 
 namespace Game.Scripts.ServerLogic.BattleStateMachine.States
@@ -27,8 +26,9 @@ namespace Game.Scripts.ServerLogic.BattleStateMachine.States
 				_eventDispatcher.DispatchEvent(EventType.GameOver, "Enemy");
 				return;
 			}
-			
-			_player.UseAbility(payload);
+
+			var useAbility = _player.UseAbility(payload);
+			_eventDispatcher.DispatchEvent(EventType.PlayerAction, useAbility);
 		}
 
 		public void Exit()

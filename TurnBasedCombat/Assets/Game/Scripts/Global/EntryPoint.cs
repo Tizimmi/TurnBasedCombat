@@ -14,7 +14,7 @@ namespace Game.Scripts.Global
 			EventDispatcher eventDispatcher = new EventDispatcher();
 			BusinessLogic businessLogic = new BusinessLogic(eventDispatcher);
 			RequestHandler requestHandler = new RequestHandler(businessLogic);
-			BattleUI battleUI = new BattleUI(requestHandler, this);
+			BattleUI battleUI = new BattleUI(requestHandler);
 			
 			eventDispatcher.AddListener<IAbility>(EventType.PlayerAction, Listener);
 			
@@ -27,7 +27,6 @@ namespace Game.Scripts.Global
 		}
 	}
 	
-
 	public interface ICoroutineRunner
 	{
 		public Coroutine StartCoroutine(IEnumerator routine);

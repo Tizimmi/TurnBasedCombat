@@ -23,7 +23,9 @@ namespace Game.Scripts.ServerLogic.BattleStateMachine.States
 			{
 				_eventDispatcher.DispatchEvent(EventType.GameOver, "Player");
 			}
-			_enemy.UseRandomAbility();
+			
+			var useRandomAbility = _enemy.UseRandomAbility();
+			_eventDispatcher.DispatchEvent(EventType.PlayerAction, useRandomAbility );
 		}
 
 		public void Exit()

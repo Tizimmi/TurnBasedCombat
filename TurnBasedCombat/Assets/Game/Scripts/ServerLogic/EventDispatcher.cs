@@ -45,5 +45,6 @@ namespace Game.Scripts.ServerLogic
 		EnemyAction = 2,
 		EndTurn = 3,
 		GameOver = 4,
+		PlayerInput = 5,
 	}
 }
